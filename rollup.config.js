@@ -10,10 +10,11 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 
 export default {
-  input: 'my-element.js',
+  input: 'lib/components/index.js',
   output: {
-    file: 'my-element.bundled.js',
+    file: 'components.bundled.js',
     format: 'esm',
+    sourcemap: 'inline',
   },
   onwarn(warning) {
     if (warning.code !== 'THIS_IS_UNDEFINED') {

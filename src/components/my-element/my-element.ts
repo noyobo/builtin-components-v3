@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {LitElement, html, css} from 'lit';
+import {LitElement, html, css, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 /**
@@ -28,7 +28,7 @@ export class MyElement extends LitElement {
   /**
    * The name to say "Hello" to.
    */
-  @property()
+  @property({reflect: true})
   name = 'World';
 
   /**
@@ -45,6 +45,31 @@ export class MyElement extends LitElement {
       </button>
       <slot></slot>
     `;
+  }
+
+  constructor() {
+    super();
+    console.log(this.name, '3333');
+  }
+
+  override willUpdate(_changedProperties: PropertyValues) {
+    super.willUpdate(_changedProperties);
+    console.warn(_changedProperties, 'willUpdate', this.name);
+  }
+
+  override firstUpdated(_changedProperties: PropertyValues) {
+    super.firstUpdated(_changedProperties);
+    console.warn(_changedProperties, 'firstUpdated', this.name);
+  }
+
+  override updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
+    console.warn(changedProperties, 'updated', this.name);
+  }
+
+  override update(changedProperties: PropertyValues) {
+    super.update(changedProperties);
+    console.warn(changedProperties, 'update', this.name);
   }
 
   private _onClick() {
