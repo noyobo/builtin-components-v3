@@ -2,7 +2,7 @@ type TimeoutOptions = {
   /** 时间间隔 */
   interval: number;
   /** 回调 */
-  callback: {(this: TimeoutOptions): void};
+  callback: { (this: TimeoutOptions): void };
 };
 
 export type TimeoutInstance = TimeoutOptions & {
@@ -16,10 +16,7 @@ export type TimeoutInstance = TimeoutOptions & {
   clear: () => void;
 };
 
-export default function timeout(
-  t: number | TimeoutOptions,
-  options?: TimeoutInstance
-): TimeoutInstance {
+export default function timeout(t: number | TimeoutOptions, options?: TimeoutInstance): TimeoutInstance {
   if (!options) {
     options = t as TimeoutInstance;
     options.startTime = Date.now();

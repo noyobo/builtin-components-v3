@@ -1,8 +1,8 @@
-import {View} from './view.component';
+import { View } from './view.component';
 
 export * from './view.component.js';
 
-customElements.define('v-view', View);
+View.define('v-view', View);
 
 declare global {
   interface HTMLElementTagNameMap {
