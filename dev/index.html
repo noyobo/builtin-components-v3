@@ -21,33 +21,15 @@
     </style>
   </head>
   <body>
-    <my-element name="12312">
+    <my-element>
       <p>This is child content</p>
     </my-element>
 
      <v-view style="height: 40px; margin: 50px; border-radius: 20px; color: #00ff00">
-       <v-view style=" border-radius: inherit;"  hover-class="hover" hover-stay-time="700">
+       <v-view style=" border-radius: inherit;" hover-class="hover" hover-stop-propagation>
          hello world
        </v-view>
      </v-view>
-
-    <script>
-      // define a custom element
-      class MyView extends HTMLElement {
-        constructor() {
-          super();
-          const shadowRoot = this.attachShadow({ mode: 'open' });
-        }
-        connectedCallback() {
-          const style = document.createElement('style');
-          style.textContent = `:host {display: block;}:host slot {all: inherit;display: contents;}`;
-          this.shadowRoot.appendChild(style);
-          const slot = document.createElement('slot');
-          this.shadowRoot.appendChild(slot);
-        }
-      }
-      customElements.define('my-view', MyView);
-    </script>
 
 
     <button id="t-view">创建 1000 个 t-view </button>
@@ -90,19 +72,6 @@
       console.log('v-view', Date.now() - start)
     })
 
-    const myView = document.getElementById('my-view')
-    myView.addEventListener('click', () => {
-      const start = Date.now()
-      for (let i = 0; i < 1000; i++) {
-        const view = document.createElement('my-view')
-        view.setAttribute('style', 'height: 40px; margin: 50px; border-radius: 20px; color: #00ff00')
-        view.setAttribute('class', 'v-view')
-        view.setAttribute('hover-class', 'hover')
-        view.innerHTML = '<my-view style=" border-radius: inherit;">hello world</my-view>'
-        document.body.appendChild(view)
-      }
-      console.log('my-view', Date.now() - start)
-    })
   </script>
   </body>
 </html>
