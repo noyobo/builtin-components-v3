@@ -5,7 +5,7 @@
  */
 
 import {legacyPlugin} from '@web/dev-server-legacy';
-import {playwrightLauncher} from '@web/test-runner-playwright';
+import {playwrightLauncher, devices} from '@web/test-runner-playwright';
 
 const mode = process.env.MODE || 'dev';
 if (!['dev', 'prod'].includes(mode)) {
@@ -53,9 +53,22 @@ if (!['dev', 'prod'].includes(mode)) {
 const browsers = {
   // Local browser testing via playwright
   // ===========
-  chromium: playwrightLauncher({product: 'chromium'}),
+  // chromium: playwrightLauncher({product: 'chromium'}),
   // firefox: playwrightLauncher({product: 'firefox'}),
-  // webkit: playwrightLauncher({product: 'webkit'}),
+  webkit: playwrightLauncher({
+    product: 'webkit',
+    launchOptions: {
+      headless: true,
+      devtools: false,
+    },
+    createBrowserContext({browser}) {
+      return browser.newContext({
+        ...devices['iPhone 11'],
+        isMobile: true,
+        hasTouch: true,
+      });
+    },
+  }),
 
   // Uncomment example launchers for running on Sauce Labs
   // ===========

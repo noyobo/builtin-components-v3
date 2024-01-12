@@ -6,3 +6,4 @@ custom-elements.json
 docs/node_modules/
 
 .idea/
+coverage/

@@ -3,20 +3,106 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>&lt;my-element> Demo</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../my-element.js"></script>
+    <script type="module" src="../../lib/components/index.js"></script>
     <style>
       p {
         border: solid 1px blue;
         padding: 8px;
       }
+      .hover {
+        background-color: aquamarine;
+      }
     </style>
   </head>
   <body>
-    <my-element>
+    <my-element name="12312">
       <p>This is child content</p>
     </my-element>
+
+     <v-view style="height: 40px; margin: 50px; border-radius: 20px; color: #00ff00">
+       <v-view style=" border-radius: inherit;"  hover-class="hover" hover-stay-time="700">
+         hello world
+       </v-view>
+     </v-view>
+
+    <script>
+      // define a custom element
+      class MyView extends HTMLElement {
+        constructor() {
+          super();
+          const shadowRoot = this.attachShadow({ mode: 'open' });
+        }
+        connectedCallback() {
+          const style = document.createElement('style');
+          style.textContent = `:host {display: block;}:host slot {all: inherit;display: contents;}`;
+          this.shadowRoot.appendChild(style);
+          const slot = document.createElement('slot');
+          this.shadowRoot.appendChild(slot);
+        }
+      }
+      customElements.define('my-view', MyView);
+    </script>
+
+
+    <button id="t-view">创建 1000 个 t-view </button>
+    <button id="v-view">创建 1000 个 v-view </button>
+    <button id="my-view">创建 1000 个 my-view </button>
+
+    <div style="display: flex;">
+      <div id="left"></div>
+      <div id="right"></div>
+    </div>
+
+  <script>
+    const tView = document.getElementById('t-view')
+    const left = document.getElementById('left')
+    const right = document.getElementById('right')
+    tView.addEventListener('click', () => {
+      const start = Date.now()
+      for (let i = 0; i < 1000; i++) {
+        const view = document.createElement('t-view')
+        view.setAttribute('style', 'height: 40px; margin: 50px; border-radius: 20px; color: #00ff00')
+        view.setAttribute('class', 't-view')
+        view.setAttribute('hover-class', 'hover')
+        view.innerHTML = '<t-view style=" border-radius: inherit;">hello world</t-view>'
+        left.appendChild(view)
+      }
+      console.log('t-view', Date.now() - start)
+    })
+
+    const vView = document.getElementById('v-view')
+    vView.addEventListener('click', () => {
+      const start = Date.now()
+      for (let i = 0; i < 1000; i++) {
+        const view = document.createElement('v-view')
+        view.setAttribute('style', 'height: 40px; margin: 50px; border-radius: 20px; color: #00ff00')
+        view.setAttribute('class', 'v-view')
+        view.setAttribute('hover-class', 'hover')
+        view.innerHTML = '<v-view style=" border-radius: inherit;">hello world</v-view>'
+        right.appendChild(view)
+      }
+      console.log('v-view', Date.now() - start)
+    })
+
+    const myView = document.getElementById('my-view')
+    myView.addEventListener('click', () => {
+      const start = Date.now()
+      for (let i = 0; i < 1000; i++) {
+        const view = document.createElement('my-view')
+        view.setAttribute('style', 'height: 40px; margin: 50px; border-radius: 20px; color: #00ff00')
+        view.setAttribute('class', 'v-view')
+        view.setAttribute('hover-class', 'hover')
+        view.innerHTML = '<my-view style=" border-radius: inherit;">hello world</my-view>'
+        document.body.appendChild(view)
+      }
+      console.log('my-view', Date.now() - start)
+    })
+  </script>
   </body>
 </html>
