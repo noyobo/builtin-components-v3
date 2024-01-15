@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {legacyPlugin} from '@web/dev-server-legacy';
-import {playwrightLauncher, devices} from '@web/test-runner-playwright';
+import { legacyPlugin } from '@web/dev-server-legacy';
+import { playwrightLauncher, devices } from '@web/test-runner-playwright';
 
 const mode = process.env.MODE || 'dev';
 if (!['dev', 'prod'].includes(mode)) {
@@ -53,15 +53,15 @@ if (!['dev', 'prod'].includes(mode)) {
 const browsers = {
   // Local browser testing via playwright
   // ===========
-  // chromium: playwrightLauncher({product: 'chromium'}),
+  // chromium: playwrightLauncher({ product: 'chromium' }),
   // firefox: playwrightLauncher({product: 'firefox'}),
   webkit: playwrightLauncher({
-    product: 'webkit',
+    product: 'chromium',
     launchOptions: {
       headless: true,
       devtools: false,
     },
-    createBrowserContext({browser}) {
+    createBrowserContext({ browser }) {
       return browser.newContext({
         ...devices['iPhone 11'],
         isMobile: true,
@@ -90,9 +90,7 @@ const noBrowser = (b) => {
 };
 let commandLineBrowsers;
 try {
-  commandLineBrowsers = process.env.BROWSERS?.split(',').map(
-    (b) => browsers[b] ?? noBrowser(b)
-  );
+  commandLineBrowsers = process.env.BROWSERS?.split(',').map((b) => browsers[b] ?? noBrowser(b));
 } catch (e) {
   console.warn(e);
 }
@@ -101,8 +99,12 @@ try {
 export default {
   rootDir: '.',
   files: ['./lib/**/*.test.js'],
-  nodeResolve: {exportConditions: mode === 'dev' ? ['development'] : []},
+  nodeResolve: { exportConditions: mode === 'dev' ? ['development'] : [] },
   preserveSymlinks: true,
+  coverage: true,
+  coverageConfig: {
+    report: true,
+  },
   browsers: commandLineBrowsers ?? Object.values(browsers),
   testFramework: {
     // https://mochajs.org/api/mocha
